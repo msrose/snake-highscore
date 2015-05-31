@@ -8,6 +8,7 @@ angular.module('snake', [])
       $scope.highscores = success.data.highscores;
       angular.forEach($scope.highscores, function(score) {
         score.date = new Date(score.date);
+        score.score = parseInt(score);
       });
     }, function(error){
       console.log("Could not get scores", error.data.message);
