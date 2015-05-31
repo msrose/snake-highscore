@@ -42,7 +42,7 @@ app.get('/highscores', function(req, res) {
 });
 
 app.post('/highscores', function(req, res) {
-  if(req.headers.authorization !== config.apiKey) {
+  if(req.headers.authorization !== apiKey) {
     return res.status(401).send({ message: 'No api key!' });
   }
 
