@@ -1,9 +1,14 @@
 var express = require('express');
 var mongo = require('mongodb').MongoClient;
-var config = require('./config.json');
 var bodyParser = require('body-parser');
 
 var prod = process.argv[2] === "--prod";
+
+var config = {};
+
+if(!prod) {
+  config = require('./config.json');
+}
 
 var port = prod ? process.env.PORT : config.port;
 var apiKey = prod ? process.env.API_KEY : config.apiKey;
