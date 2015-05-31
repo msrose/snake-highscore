@@ -17,17 +17,13 @@ mongo.connect(mongoUrl, function(err, database) {
   start();
 });
 
-app.use(function(req, res, next) {
-  if(req.headers.authorization !== config.apiKey) {
-    return res.status(401).send({ message: 'No api key!' });
-  }
-  next();
-});
-
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 app.get('/highscores', function(req, res) {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "X-Requested-With");
+
   db.collection('userScores').find().toArray(function(err, docs) {
     if(err) {
       res.status(500).send({ 'message': 'There was an error!' });
@@ -37,7 +33,10 @@ app.get('/highscores', function(req, res) {
 });
 
 app.post('/highscores', function(req, res) {
-  console.log(req.body);
+  if(req.headers.authorization !== config.apiKey) {
+    return res.status(401).send({ message: 'No api key!' });
+  }
+
   var data = {
     name: req.body.name,
     score: parseInt(req.body.score),
