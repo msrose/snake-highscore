@@ -1,0 +1,13 @@
+{
+  "name": "highscore",
+  "version": "0.0.1",
+  "description": "",
+  "main": "index.js",
+  "author": "Michael Rose",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.12.4",
+    "express": "^4.12.4",
+    "mongodb": "^2.0.33"
+  }
+}
