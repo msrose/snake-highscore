@@ -18,18 +18,22 @@ var app = express();
 var db;
 
 mongo.connect(mongoUrl, function(err, database) {
+  if(err) {
+    return console.log("Could not connect to mongo!");
+  }
   db = database;
   start();
 });
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use(express.static('static'));
 
 app.get('/highscores', function(req, res) {
   res.header("Access-Control-Allow-Origin", "*");
   res.header("Access-Control-Allow-Headers", "X-Requested-With");
 
-  db.collection('userScores').find().toArray(function(err, docs) {
+  db.collection('userScores').find().limit(req.query.limit || 25).toArray(function(err, docs) {
     if(err) {
       res.status(500).send({ 'message': 'There was an error!' });
     }
