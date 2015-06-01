@@ -1,7 +1,11 @@
 {
   "name": "highscore",
   "version": "0.0.1",
-  "description": "",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/msrose/snake-highscore"
+  },
+  "description": "Highscores for based Nick Cage snake game.",
   "main": "index.js",
   "author": "Michael Rose",
   "license": "ISC",
