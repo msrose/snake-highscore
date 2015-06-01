@@ -6,16 +6,14 @@ angular.module('snake', [])
   function getScores() {
     $http.get('/highscores').then(function(success){
       $scope.highscores = success.data.highscores;
-      angular.forEach($scope.highscores, function(score) {
-        score.date = new Date(score.date);
-        score.score = parseInt(score.score);
+      angular.forEach($scope.highscores, function(highscore) {
+        highscore.date = new Date(highscore.date);
       });
     }, function(error){
-      console.log("Could not get scores", error.data.message);
       $scope.error = "Error: " + error.data.message;
     });
   }
 
   getScores();
-  $interval(getScores, 2000);
+  $interval(getScores, 3000);
 }]);

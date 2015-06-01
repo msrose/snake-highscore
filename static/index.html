@@ -10,7 +10,7 @@
     <div ng-controller="highscore" class="container-fluid">
       <div class="row">
         <div class="col-sm-3 text-center">
-          <img src="http://ecx.images-amazon.com/images/I/51GWTRHVBOL._SY300_.jpg" />
+          <img src="http://ecx.images-amazon.com/images/I/51GWTRHVBOL._SY300_.jpg" alt="Nick Cage!" />
         </div>
         <div class="col-sm-9">
           <h1>Snake in the Cage: Highscores</h1>
@@ -24,11 +24,11 @@
               </tr>
             </thead>
             <tbody>
-              <tr ng-repeat="score in highscores | orderBy:'-score'">
+              <tr ng-repeat="highscore in highscores | orderBy:['-score', 'date']">
                 <td>{{$index + 1}}</td>
-                <td>{{score.name}}</td>
-                <td>{{score.score}}</td>
-                <td>{{score.date | date:'medium'}}</td>
+                <td>{{highscore.name}}</td>
+                <td>{{highscore.score}}</td>
+                <td>{{highscore.date | date:'medium'}}</td>
               </tr>
             </tbody>
           </table>
