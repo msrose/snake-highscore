@@ -33,7 +33,7 @@ app.get('/highscores', function(req, res) {
   res.header("Access-Control-Allow-Origin", "*");
   res.header("Access-Control-Allow-Headers", "X-Requested-With");
 
-  db.collection('userScores').find().limit(req.query.limit || 25).toArray(function(err, docs) {
+  db.collection('userScores').find({ $query: {}, $orderby: { score: -1 } }).limit(req.query.limit || 25).toArray(function(err, docs) {
     if(err) {
       res.status(500).send({ 'message': 'There was an error!' });
     }
