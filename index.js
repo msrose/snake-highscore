@@ -8,17 +8,17 @@ var config = {};
 
 if(!prod) {
   config = require('./config.json');
+} else {
+  config.port = process.env.PORT;
+  config.apiKey = process.env.API_KEY;
+  config.mongoUrl = process.env.MONGO_URL;
 }
-
-var port = prod ? process.env.PORT : config.port;
-var apiKey = prod ? process.env.API_KEY : config.apiKey;
-var mongoUrl = prod ? process.env.MONGO_URL : config.mongoUrl;
 
 var db;
 
-mongo.connect(mongoUrl, function(err, database) {
+mongo.connect(config.mongoUrl, function(err, database) {
   if(err) {
-    return console.log("Could not connect to mongo!");
+    return console.log("Could not connect to mongo:", err);
   }
   db = database;
   start();
@@ -40,14 +40,15 @@ function start() {
 
     db.collection('userScores').find(query).limit(limit).toArray(function(err, docs) {
       if(err) {
-        res.status(500).send({ 'message': 'Error retrieving data!' });
+        console.log('Error querying from database:', err);
+        return res.status(500).send({ 'message': 'Error retrieving data!' });
       }
       res.send({ highscores: docs });
     });
   });
 
   app.post('/highscores', function(req, res) {
-    if(req.headers.authorization !== apiKey) {
+    if(req.headers.authorization !== config.apiKey) {
       return res.status(401).send({ message: 'No api key!' });
     }
 
@@ -63,13 +64,14 @@ function start() {
 
     db.collection('userScores').insert(data, function(err, result) {
       if(err) {
+        console.log('Error writing to database:', err);
         return res.status(500).send({ 'message': 'Error entering highscore!' });
       }
       res.send({ 'message': 'Successfully added highscore!' });
     });
   });
 
-  app.listen(port);
-  console.log('Listening on port', port);
+  app.listen(config.port);
+  console.log('Listening on port', config.port);
 }
 
